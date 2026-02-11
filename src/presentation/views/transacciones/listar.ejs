@@ -1,0 +1,65 @@
+<%- include('../layout', { body: ` <div class="page-header">
+    <h2>🔄 Transacciones</h2>
+    <a href="/transacciones/crear" class="btn btn-primario">+ Nueva Transacción</a>
+    </div>
+
+    ${typeof mensaje !== 'undefined' && mensaje ? '<div class="alerta alerta-exito">✅ ' + mensaje + '</div>' : ''}
+    ${typeof error !== 'undefined' && error ? '<div class="alerta alerta-error">⛔ ' + error + '</div>' : ''}
+
+    <form method="GET" class="filtros-barra">
+        <div class="filtro-grupo">
+            <label>Tipo</label>
+            <select name="tipo" class="form-control">
+                <option value="">— Todos —</option>
+                ${tiposTransaccion.map(t => '<option value="' + t + '" ' + (filtros.tipo === t ? ' selected' : '' ) + '>' + t + '</option>' ).join('')}
+            </select>
+        </div>
+        <div class="filtro-grupo">
+            <label>Artículo</label>
+            <select name="articulo_id" class="form-control">
+                <option value="">— Todos —</option>
+                ${articulos.map(a => '<option value="' + a.id + '" ' + (String(filtros.articulo_id) === String(a.id) ? 'selected' : '' ) + '>' + a.descripcion + '</option>' ).join('')}
+            </select>
+        </div>
+        <div class="filtro-grupo">
+            <label>Almacén</label>
+            <select name="almacen_id" class="form-control">
+                <option value="">— Todos —</option>
+                ${almacenes.map(a => '<option value="' + a.id + '" ' + (String(filtros.almacen_id) === String(a.id) ? 'selected' : '' ) + '>' + a.descripcion + '</option>' ).join('')}
+            </select>
+        </div>
+        <div class="filtro-grupo">
+            <label>Fecha desde</label>
+            <input type="date" name="fecha_desde" class="form-control" value="${filtros.fecha_desde || ''}">
+        </div>
+        <div class="filtro-grupo">
+            <label>Fecha hasta</label>
+            <input type="date" name="fecha_hasta" class="form-control" value="${filtros.fecha_hasta || ''}">
+        </div>
+        <button type="submit" class="btn btn-secundario">🔍 Filtrar</button>
+        <a href="/transacciones" class="btn btn-secundario">✖ Limpiar</a>
+    </form>
+
+    <div class="card">
+        <div class="tabla-contenedor">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Tipo</th>
+                        <th>Artículo</th>
+                        <th>Almacén</th>
+                        <th>Fecha</th>
+                        <th>Cantidad</th>
+                        <th>Monto</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${transacciones.length === 0 ? '<tr><td colspan="8"><div class="vacio"><span class="vacio-icon">📭</span><p>No se encontraron transacciones.</p></div></td></tr>' : ''}
+                    ${transacciones.map(t => { const fechaStr = t.fecha instanceof Date ? t.fecha.toISOString().split('T')[0] : String(t.fecha).split('T')[0]; return '<tr>' + '<td>' + t.id + '</td>' + '<td><span class="badge badge-' + t.tipo.toLowerCase() + '">' + t.tipo + '</span></td>' + '<td>' + t.articulo_descripcion + '</td>' + '<td>' + t.almacen_descripcion + '</td>' + '<td>' + fechaStr + '</td>' + '<td>' + parseFloat(t.cantidad).toFixed(2) + '</td>' + '<td>$' + parseFloat(t.monto).toFixed(2) + '</td>' + '<td><a href="/transacciones/' + t.id + '" class="btn btn-sm btn-secundario">👁️ Ver</a></td>' + '</tr>'; }).join('')}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    ` }) %>

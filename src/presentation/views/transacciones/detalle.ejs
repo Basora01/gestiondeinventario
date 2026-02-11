@@ -1,0 +1,44 @@
+<%- include('../layout', { body: ` <div class="page-header">
+    <h2>🔄 Detalle de Transacción #${transaccion.id}</h2>
+    <a href="/transacciones" class="btn btn-secundario">← Volver a transacciones</a>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <div class="detalle-grid">
+                <div class="detalle-item">
+                    <label>ID</label>
+                    <div class="valor">${transaccion.id}</div>
+                </div>
+                <div class="detalle-item">
+                    <label>Tipo</label>
+                    <div class="valor"><span class="badge badge-${transaccion.tipo.toLowerCase()}">${transaccion.tipo}</span></div>
+                </div>
+                <div class="detalle-item">
+                    <label>Artículo</label>
+                    <div class="valor">${transaccion.articulo_descripcion}</div>
+                </div>
+                <div class="detalle-item">
+                    <label>Almacén</label>
+                    <div class="valor">${transaccion.almacen_descripcion}</div>
+                </div>
+                <div class="detalle-item">
+                    <label>Fecha</label>
+                    <div class="valor">${transaccion.fecha instanceof Date ? transaccion.fecha.toISOString().split('T')[0] : String(transaccion.fecha).split('T')[0]}</div>
+                </div>
+                <div class="detalle-item">
+                    <label>Cantidad</label>
+                    <div class="valor">${parseFloat(transaccion.cantidad).toFixed(2)}</div>
+                </div>
+                <div class="detalle-item">
+                    <label>Monto</label>
+                    <div class="valor">$${parseFloat(transaccion.monto).toFixed(2)}</div>
+                </div>
+                <div class="detalle-item">
+                    <label>Registrada</label>
+                    <div class="valor">${transaccion.creado_en ? new Date(transaccion.creado_en).toLocaleString('es-ES') : '—'}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    ` }) %>

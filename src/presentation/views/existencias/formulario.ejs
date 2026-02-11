@@ -1,0 +1,41 @@
+<%- include('../layout', { body: ` <div class="page-header">
+    <h2>📊 Editar Existencia</h2>
+    </div>
+
+    <div class="alerta alerta-advertencia">
+        ⚠️ <strong>Nota:</strong> Para ajustar existencias de forma controlada, se recomienda usar una transacción de tipo "Ajuste" en el módulo de Transacciones.
+    </div>
+
+    ${typeof error !== 'undefined' && error ? '<div class="alerta alerta-error">⛔ ' + error + '</div>' : ''}
+
+    <div class="card">
+        <div class="card-body">
+            <form method="POST" action="/existencias/editar">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Almacén *</label>
+                        <select name="almacen_id" class="form-control" required>
+                            <option value="">— Seleccionar —</option>
+                            ${almacenes.map(a => '<option value="' + a.id + '" ' + (String(existencia.almacen_id) === String(a.id) ? 'selected' : '') + '>' + a.descripcion + '</option>').join('')}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Artículo *</label>
+                        <select name="articulo_id" class="form-control" required>
+                            <option value="">— Seleccionar —</option>
+                            ${articulos.map(a => '<option value="' + a.id + '" ' + (String(existencia.articulo_id) === String(a.id) ? 'selected' : '') + '>' + a.descripcion + '</option>').join('')}
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Cantidad *</label>
+                    <input type="number" name="cantidad" class="form-control" required min="0" step="0.01" value="${existencia.cantidad || '0'}" placeholder="0.00">
+                </div>
+                <div class="form-acciones">
+                    <button type="submit" class="btn btn-primario">💾 Guardar</button>
+                    <a href="/existencias" class="btn btn-secundario">← Cancelar</a>
+                </div>
+            </form>
+        </div>
+    </div>
+    ` }) %>

@@ -1,0 +1,36 @@
+<%- include('../layout', { body: ` <div class="page-header">
+    <h2>🏭 Almacenes</h2>
+    <a href="/almacenes/crear" class="btn btn-primario">+ Nuevo Almacén</a>
+    </div>
+
+    ${typeof mensaje !== 'undefined' && mensaje ? '<div class="alerta alerta-exito">✅ ' + mensaje + '</div>' : ''}
+    ${typeof error !== 'undefined' && error ? '<div class="alerta alerta-error">⛔ ' + error + '</div>' : ''}
+
+    <form method="GET" class="filtros-barra">
+        <div class="filtro-grupo">
+            <label>Buscar</label>
+            <input type="text" name="busqueda" class="form-control" placeholder="Descripción del almacén..." value="${filtro}">
+        </div>
+        <button type="submit" class="btn btn-secundario">🔍 Filtrar</button>
+        <a href="/almacenes" class="btn btn-secundario">✖ Limpiar</a>
+    </form>
+
+    <div class="card">
+        <div class="tabla-contenedor">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Descripción</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${almacenes.length === 0 ? '<tr><td colspan="4"><div class="vacio"><span class="vacio-icon">📭</span><p>No se encontraron almacenes.</p></div></td></tr>' : ''}
+                    ${almacenes.map(a => '<tr>' + '<td>' + a.id + '</td>' + '<td>' + a.descripcion + '</td>' + '<td><span class="badge badge-' + (a.estado === 'Activo' ? 'activo' : 'inactivo') + '">' + a.estado + '</span></td>' + '<td><a href="/almacenes/editar/' + a.id + '" class="btn btn-sm btn-secundario">✏️ Editar</a></td>' + '</tr>').join('')}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    ` }) %>

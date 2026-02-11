@@ -1,0 +1,39 @@
+<%- include('../layout', { body: ` <div class="page-header">
+    <h2>📋 Artículos</h2>
+    <a href="/articulos/crear" class="btn btn-primario">+ Nuevo Artículo</a>
+    </div>
+
+    ${typeof mensaje !== 'undefined' && mensaje ? '<div class="alerta alerta-exito">✅ ' + mensaje + '</div>' : ''}
+    ${typeof error !== 'undefined' && error ? '<div class="alerta alerta-error">⛔ ' + error + '</div>' : ''}
+
+    <form method="GET" class="filtros-barra">
+        <div class="filtro-grupo">
+            <label>Buscar</label>
+            <input type="text" name="busqueda" class="form-control" placeholder="Descripción del artículo..." value="${filtro}">
+        </div>
+        <button type="submit" class="btn btn-secundario">🔍 Filtrar</button>
+        <a href="/articulos" class="btn btn-secundario">✖ Limpiar</a>
+    </form>
+
+    <div class="card">
+        <div class="tabla-contenedor">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Descripción</th>
+                        <th>Tipo Inventario</th>
+                        <th>Costo Unitario</th>
+                        <th>Existencia Total</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${articulos.length === 0 ? '<tr><td colspan="7"><div class="vacio"><span class="vacio-icon">📭</span><p>No se encontraron artículos.</p></div></td></tr>' : ''}
+                    ${articulos.map(a => '<tr>' + '<td>' + a.id + '</td>' + '<td>' + a.descripcion + '</td>' + '<td>' + (a.tipo_inventario_descripcion || '—') + '</td>' + '<td>$' + parseFloat(a.costo_unitario).toFixed(2) + '</td>' + '<td><strong>' + parseFloat(a.existencia_total).toFixed(2) + '</strong></td>' + '<td><span class="badge badge-activo">' + a.estado + '</span></td>' + '<td><a href="/articulos/editar/' + a.id + '" class="btn btn-sm btn-secundario">✏️ Editar</a></td>' + '</tr>').join('')}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    ` }) %>

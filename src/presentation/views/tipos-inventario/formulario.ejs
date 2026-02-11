@@ -1,0 +1,34 @@
+<%- include('../layout', { body: ` <div class="page-header">
+    <h2>🏷️ ${esEdicion ? 'Editar' : 'Nuevo'} Tipo de Inventario</h2>
+    </div>
+
+    ${typeof error !== 'undefined' && error ? '<div class="alerta alerta-error">⛔ ' + error + '</div>' : ''}
+
+    <div class="card">
+        <div class="card-body">
+            <form method="POST" action="/tipos-inventario/${esEdicion ? 'editar/' + tipo.id : 'crear'}">
+                <div class="form-group">
+                    <label>Descripción *</label>
+                    <input type="text" name="descripcion" class="form-control" required value="${tipo.descripcion || ''}" placeholder="Ej: Materia Prima">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Cuenta Contable</label>
+                        <input type="text" name="cuenta_contable" class="form-control" value="${tipo.cuenta_contable || ''}" placeholder="Ej: 1101-01">
+                    </div>
+                    <div class="form-group">
+                        <label>Estado *</label>
+                        <select name="estado" class="form-control" required>
+                            <option value="Activo" ${(tipo.estado || 'Activo') === 'Activo' ? 'selected' : ''}>Activo</option>
+                            <option value="Inactivo" ${tipo.estado === 'Inactivo' ? 'selected' : ''}>Inactivo</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-acciones">
+                    <button type="submit" class="btn btn-primario">💾 ${esEdicion ? 'Actualizar' : 'Guardar'}</button>
+                    <a href="/tipos-inventario" class="btn btn-secundario">← Cancelar</a>
+                </div>
+            </form>
+        </div>
+    </div>
+    ` }) %>

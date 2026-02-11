@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  db:
+    image: mysql:8.0
+    container_name: inventario_mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: gestion_inventario
+      MYSQL_USER: inventario_user
+      MYSQL_PASSWORD: inventario_pass
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./sql/001_schema.sql:/docker-entrypoint-initdb.d/001_schema.sql
+      - ./sql/002_datos_semilla.sql:/docker-entrypoint-initdb.d/002_datos_semilla.sql
+    command: --default-authentication-plugin=mysql_native_password
+
+  app:
+    build: .
+    container_name: inventario_app
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      PORT: 3000
+      NODE_ENV: production
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_USER: inventario_user
+      DB_PASSWORD: inventario_pass
+      DB_NAME: gestion_inventario
+    depends_on:
+      - db
+
+volumes:
+  mysql_data:

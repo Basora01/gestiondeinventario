@@ -1,0 +1,60 @@
+<%- include('../layout', { body: ` <div class="page-header">
+    <h2>🔄 Registrar Transacción</h2>
+    </div>
+
+    <div class="alerta alerta-info">
+        ℹ️ <strong>Ajuste:</strong> Para transacciones de tipo "Ajuste", ingrese la <em>cantidad nueva deseada</em> en el almacén. El sistema calculará automáticamente la diferencia.
+    </div>
+
+    ${typeof error !== 'undefined' && error ? '<div class="alerta alerta-error">⛔ ' + error + '</div>' : ''}
+
+    <div class="card">
+        <div class="card-body">
+            <form method="POST" action="/transacciones/crear">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Tipo de Transacción *</label>
+                        <select name="tipo" class="form-control" required>
+                            <option value="">— Seleccionar —</option>
+                            ${tiposTransaccion.map(t => '<option value="' + t + '" ' + (transaccion.tipo === t ? 'selected' : '') + '>' + t + '</option>').join('')}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Fecha *</label>
+                        <input type="date" name="fecha" class="form-control" required value="${transaccion.fecha || ''}">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Artículo *</label>
+                        <select name="articulo_id" class="form-control" required>
+                            <option value="">— Seleccionar artículo —</option>
+                            ${articulos.map(a => '<option value="' + a.id + '" ' + (String(transaccion.articulo_id) === String(a.id) ? 'selected' : '') + '>' + a.descripcion + '</option>').join('')}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Almacén *</label>
+                        <select name="almacen_id" class="form-control" required>
+                            <option value="">— Seleccionar almacén —</option>
+                            ${almacenes.map(a => '<option value="' + a.id + '" ' + (String(transaccion.almacen_id) === String(a.id) ? 'selected' : '') + '>' + a.descripcion + '</option>').join('')}
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Cantidad *</label>
+                        <input type="number" name="cantidad" class="form-control" required min="0" step="0.01" value="${transaccion.cantidad || ''}" placeholder="0.00">
+                    </div>
+                    <div class="form-group">
+                        <label>Monto ($)</label>
+                        <input type="number" name="monto" class="form-control" min="0" step="0.01" value="${transaccion.monto || '0.00'}" placeholder="0.00">
+                    </div>
+                </div>
+                <div class="form-acciones">
+                    <button type="submit" class="btn btn-exito">✅ Registrar Transacción</button>
+                    <a href="/transacciones" class="btn btn-secundario">← Cancelar</a>
+                </div>
+            </form>
+        </div>
+    </div>
+    ` }) %>

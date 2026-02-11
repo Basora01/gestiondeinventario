@@ -1,0 +1,50 @@
+<%- include('../layout', { body: ` <div class="page-header">
+    <h2>📊 Existencias por Almacén</h2>
+    <a href="/existencias/editar" class="btn btn-primario">✏️ Editar Existencia</a>
+    </div>
+
+    ${typeof mensaje !== 'undefined' && mensaje ? '<div class="alerta alerta-exito">✅ ' + mensaje + '</div>' : ''}
+    ${typeof error !== 'undefined' && error ? '<div class="alerta alerta-error">⛔ ' + error + '</div>' : ''}
+
+    <form method="GET" class="filtros-barra">
+        <div class="filtro-grupo">
+            <label>Almacén</label>
+            <select name="almacen_id" class="form-control">
+                <option value="">— Todos —</option>
+                ${almacenes.map(a => '<option value="' + a.id + '" ' + (String(filtros.almacen_id) === String(a.id) ? 'selected' : '' ) + '>' + a.descripcion + '</option>' ).join('')}
+            </select>
+        </div>
+        <div class="filtro-grupo">
+            <label>Artículo</label>
+            <select name="articulo_id" class="form-control">
+                <option value="">— Todos —</option>
+                ${articulos.map(a => '<option value="' + a.id + '" ' + (String(filtros.articulo_id) === String(a.id) ? 'selected' : '' ) + '>' + a.descripcion + '</option>' ).join('')}
+            </select>
+        </div>
+        <div class="filtro-grupo">
+            <label>Buscar</label>
+            <input type="text" name="busqueda" class="form-control" placeholder="Buscar..." value="${filtros.busqueda || ''}">
+        </div>
+        <button type="submit" class="btn btn-secundario">🔍 Filtrar</button>
+        <a href="/existencias" class="btn btn-secundario">✖ Limpiar</a>
+    </form>
+
+    <div class="card">
+        <div class="tabla-contenedor">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Almacén</th>
+                        <th>Artículo</th>
+                        <th>Cantidad</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${existencias.length === 0 ? '<tr><td colspan="4"><div class="vacio"><span class="vacio-icon">📭</span><p>No hay existencias registradas.</p></div></td></tr>' : ''}
+                    ${existencias.map(e => '<tr>' + '<td>' + e.almacen_descripcion + '</td>' + '<td>' + e.articulo_descripcion + '</td>' + '<td><strong>' + parseFloat(e.cantidad).toFixed(2) + '</strong></td>' + '<td><a href="/existencias/editar?almacen_id=' + e.almacen_id + '&articulo_id=' + e.articulo_id + '" class="btn btn-sm btn-secundario">✏️ Editar</a></td>' + '</tr>').join('')}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    ` }) %>

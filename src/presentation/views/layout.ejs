@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Sistema de Gestión de Inventario — Control de artículos, almacenes y transacciones">
+  <title><%= titulo %> — Gestión de Inventario</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <div class="app-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <h1><span class="logo-icon">📦</span> <span>Inventario</span></h1>
+        <p>Sistema de Gestión</p>
+      </div>
+      <nav class="sidebar-nav">
+        <ul>
+          <li>
+            <a href="/" class="nav-link <%= paginaActual === 'inicio' ? 'activo' : '' %>">
+              <span class="nav-icon">🏠</span> <span>Inicio</span>
+            </a>
+          </li>
+          <li>
+            <a href="/articulos" class="nav-link <%= paginaActual === 'articulos' ? 'activo' : '' %>">
+              <span class="nav-icon">📋</span> <span>Artículos</span>
+            </a>
+          </li>
+          <li>
+            <a href="/tipos-inventario" class="nav-link <%= paginaActual === 'tipos-inventario' ? 'activo' : '' %>">
+              <span class="nav-icon">🏷️</span> <span>Tipos de Inventario</span>
+            </a>
+          </li>
+          <li>
+            <a href="/almacenes" class="nav-link <%= paginaActual === 'almacenes' ? 'activo' : '' %>">
+              <span class="nav-icon">🏭</span> <span>Almacenes</span>
+            </a>
+          </li>
+          <li>
+            <a href="/existencias" class="nav-link <%= paginaActual === 'existencias' ? 'activo' : '' %>">
+              <span class="nav-icon">📊</span> <span>Existencias</span>
+            </a>
+          </li>
+          <li>
+            <a href="/transacciones" class="nav-link <%= paginaActual === 'transacciones' ? 'activo' : '' %>">
+              <span class="nav-icon">🔄</span> <span>Transacciones</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+      <div class="sidebar-footer">
+        v1.0.0 — Gestión de Inventario
+      </div>
+    </aside>
+
+    <!-- Contenido principal -->
+    <main class="main-content">
+      <%- body %>
+    </main>
+  </div>
+
+  <script src="/js/app.js"></script>
+</body>
+</html>
