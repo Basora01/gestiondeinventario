@@ -22,5 +22,9 @@ module.exports = {
         const errores = entidad.validar();
         if (errores.length > 0) throw new Error(errores.join(' '));
         return repo.crearOActualizar(datos);
+    },
+
+    async eliminar(almacenId, articuloId) {
+        return repo.eliminar(almacenId, articuloId);
     }
 };

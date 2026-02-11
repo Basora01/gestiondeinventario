@@ -79,4 +79,14 @@ router.post('/editar', async (req, res, next) => {
     }
 });
 
+// Eliminar existencia
+router.post('/eliminar', async (req, res) => {
+    try {
+        await existenciasCasos.eliminar(parseInt(req.body.almacen_id), parseInt(req.body.articulo_id));
+        res.redirect('/existencias?mensaje=Existencia eliminada exitosamente.');
+    } catch (error) {
+        res.redirect('/existencias?error=' + encodeURIComponent(error.message));
+    }
+});
+
 module.exports = router;

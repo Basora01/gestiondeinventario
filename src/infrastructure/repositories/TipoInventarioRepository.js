@@ -41,6 +41,12 @@ class TipoInventarioRepository {
         return rows.length > 0;
     }
 
+    async eliminar(id) {
+        const sql = 'DELETE FROM tipos_inventario WHERE id = $1 RETURNING id';
+        const rows = await ejecutarConsulta(sql, [id]);
+        return rows.length > 0;
+    }
+
     async listarActivos() {
         return ejecutarConsulta("SELECT * FROM tipos_inventario WHERE estado = 'Activo' ORDER BY descripcion");
     }

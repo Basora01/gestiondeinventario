@@ -56,6 +56,12 @@ class ExistenciaPorAlmacenRepository {
         await ejecutarConsulta(sql, [datos.almacen_id, datos.articulo_id, datos.cantidad]);
     }
 
+    async eliminar(almacenId, articuloId) {
+        const sql = 'DELETE FROM existencias_por_almacen WHERE almacen_id = $1 AND articulo_id = $2 RETURNING almacen_id';
+        const rows = await ejecutarConsulta(sql, [almacenId, articuloId]);
+        return rows.length > 0;
+    }
+
     /** Métodos con conexión transaccional */
     async obtenerConConexion(client, almacenId, articuloId) {
         const res = await client.query(

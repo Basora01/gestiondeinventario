@@ -26,6 +26,12 @@ module.exports = {
         return transaccion;
     },
 
+    async eliminar(id) {
+        const existente = await transaccionRepo.obtenerPorId(id);
+        if (!existente) throw new Error('Transacción no encontrada.');
+        return transaccionRepo.eliminar(id);
+    },
+
     /**
      * Registrar una nueva transacción de inventario.
      * Ejecuta en una transacción de BD (Postgres) para garantizar atomicidad.

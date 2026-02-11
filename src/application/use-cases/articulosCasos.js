@@ -33,6 +33,12 @@ module.exports = {
         return repo.actualizar(id, datos);
     },
 
+    async eliminar(id) {
+        const existente = await repo.obtenerPorId(id);
+        if (!existente) throw new Error('Artículo no encontrado.');
+        return repo.eliminar(id);
+    },
+
     async listarActivos() {
         return repo.listarActivos();
     }

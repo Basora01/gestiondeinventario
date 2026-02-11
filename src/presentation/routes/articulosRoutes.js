@@ -92,4 +92,17 @@ router.post('/editar/:id', async (req, res, next) => {
     }
 });
 
+// Eliminar artículo
+router.post('/eliminar/:id', async (req, res) => {
+    try {
+        await articulosCasos.eliminar(req.params.id);
+        res.redirect('/articulos?mensaje=Artículo eliminado exitosamente.');
+    } catch (error) {
+        const msg = error.message.includes('violates foreign key') || error.message.includes('RESTRICT')
+            ? 'No se puede eliminar este artículo porque tiene existencias o transacciones asociadas.'
+            : error.message;
+        res.redirect('/articulos?error=' + encodeURIComponent(msg));
+    }
+});
+
 module.exports = router;

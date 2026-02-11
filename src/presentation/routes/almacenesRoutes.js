@@ -79,4 +79,17 @@ router.post('/editar/:id', async (req, res, next) => {
     }
 });
 
+// Eliminar almacén
+router.post('/eliminar/:id', async (req, res) => {
+    try {
+        await almacenesCasos.eliminar(req.params.id);
+        res.redirect('/almacenes?mensaje=Almacén eliminado exitosamente.');
+    } catch (error) {
+        const msg = error.message.includes('violates foreign key') || error.message.includes('RESTRICT')
+            ? 'No se puede eliminar este almacén porque tiene existencias o transacciones asociadas.'
+            : error.message;
+        res.redirect('/almacenes?error=' + encodeURIComponent(msg));
+    }
+});
+
 module.exports = router;

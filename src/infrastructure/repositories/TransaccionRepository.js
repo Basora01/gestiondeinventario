@@ -55,6 +55,12 @@ class TransaccionRepository {
         return rows[0] || null;
     }
 
+    async eliminar(id) {
+        const sql = 'DELETE FROM transacciones WHERE id = $1 RETURNING id';
+        const rows = await ejecutarConsulta(sql, [id]);
+        return rows.length > 0;
+    }
+
     async crearConConexion(client, datos) {
         const sql = `INSERT INTO transacciones (tipo, articulo_id, almacen_id, fecha, cantidad, monto)
                  VALUES ($1, $2, $3, $4, $5, $6) RETURNING id`;

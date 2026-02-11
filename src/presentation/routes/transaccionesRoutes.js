@@ -82,6 +82,16 @@ router.post('/crear', async (req, res, next) => {
     }
 });
 
+// Eliminar transacción
+router.post('/eliminar/:id', async (req, res) => {
+    try {
+        await transaccionesCasos.eliminar(req.params.id);
+        res.redirect('/transacciones?mensaje=Transacción eliminada exitosamente.');
+    } catch (error) {
+        res.redirect('/transacciones?error=' + encodeURIComponent(error.message));
+    }
+});
+
 // Ver detalle de transacción
 router.get('/:id', async (req, res, next) => {
     try {

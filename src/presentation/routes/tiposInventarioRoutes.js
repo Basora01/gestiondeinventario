@@ -79,4 +79,17 @@ router.post('/editar/:id', async (req, res, next) => {
     }
 });
 
+// Eliminar tipo de inventario
+router.post('/eliminar/:id', async (req, res) => {
+    try {
+        await tiposInventarioCasos.eliminar(req.params.id);
+        res.redirect('/tipos-inventario?mensaje=Tipo de inventario eliminado exitosamente.');
+    } catch (error) {
+        const msg = error.message.includes('violates foreign key') || error.message.includes('RESTRICT')
+            ? 'No se puede eliminar este tipo porque tiene artículos asociados.'
+            : error.message;
+        res.redirect('/tipos-inventario?error=' + encodeURIComponent(msg));
+    }
+});
+
 module.exports = router;

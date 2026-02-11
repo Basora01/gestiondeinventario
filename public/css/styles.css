@@ -866,3 +866,42 @@ tbody tr:nth-child(10) {
     align-items: flex-start;
   }
 }
+
+/* ========================================
+   Botones de acciones en tabla
+   ======================================== */
+.acciones {
+  display: flex;
+  gap: 0.4rem;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-sm {
+  padding: 0.3rem 0.55rem;
+  font-size: 0.78rem;
+  line-height: 1;
+  border-radius: var(--radio-borde);
+  min-width: auto;
+}
+
+.btn-peligro {
+  background: rgba(239, 68, 68, 0.15);
+  color: #f87171;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  cursor: pointer;
+  transition: var(--transicion);
+}
+
+.btn-peligro:hover {
+  background: rgba(239, 68, 68, 0.3);
+  color: #fca5a5;
+  box-shadow: 0 0 12px rgba(239, 68, 68, 0.25);
+  transform: translateY(-1px);
+}
+
+.form-eliminar {
+  display: inline;
+  margin: 0;
+  padding: 0;
+}

@@ -63,6 +63,12 @@ class ArticuloRepository {
         return res.rows[0] || null;
     }
 
+    async eliminar(id) {
+        const sql = 'DELETE FROM articulos WHERE id = $1 RETURNING id';
+        const rows = await ejecutarConsulta(sql, [id]);
+        return rows.length > 0;
+    }
+
     async listarActivos() {
         return ejecutarConsulta("SELECT * FROM articulos WHERE estado = 'Activo' ORDER BY descripcion");
     }

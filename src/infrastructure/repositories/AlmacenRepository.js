@@ -32,6 +32,12 @@ class AlmacenRepository {
         return rows.length > 0;
     }
 
+    async eliminar(id) {
+        const sql = 'DELETE FROM almacenes WHERE id = $1 RETURNING id';
+        const rows = await ejecutarConsulta(sql, [id]);
+        return rows.length > 0;
+    }
+
     // Método transaccional
     async obtenerPorIdConConexion(client, id) {
         const res = await client.query('SELECT * FROM almacenes WHERE id = $1', [id]);
