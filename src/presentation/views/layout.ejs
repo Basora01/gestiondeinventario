@@ -47,10 +47,26 @@
               <span class="nav-icon">🔄</span> <span>Transacciones</span>
             </a>
           </li>
+          <li>
+            <a href="/validaciones" class="nav-link <%= paginaActual === 'validaciones' ? 'activo' : '' %>">
+              <span class="nav-icon">✅</span> <span>Validaciones</span>
+            </a>
+          </li>
         </ul>
       </nav>
       <div class="sidebar-footer">
-        v1.0.0 — Gestión de Inventario
+        <% if (typeof usuarioActual !== 'undefined' && usuarioActual) { %>
+          <div class="user-info">
+            <span class="user-avatar">👤</span>
+            <div class="user-details">
+              <strong><%= usuarioActual.nombre %></strong>
+              <span class="user-role"><%= usuarioActual.rol %></span>
+            </div>
+          </div>
+          <a href="/logout" class="btn-logout">🚪 Cerrar Sesión</a>
+        <% } else { %>
+          v1.0.0 — Gestión de Inventario
+        <% } %>
       </div>
     </aside>
 

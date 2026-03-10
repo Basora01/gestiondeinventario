@@ -4,13 +4,27 @@ const { ejecutarConsulta } = require('../config/database');
  * Repositorio para la entidad TipoInventario (PostgreSQL).
  */
 class TipoInventarioRepository {
-    async listar(filtro = '') {
+    async listar(filtroOrObj = '') {
         let sql = 'SELECT * FROM tipos_inventario';
+        const conditions = [];
         const params = [];
-        if (filtro) {
-            // ILIKE es case-insensitive en Postgres
-            sql += ' WHERE descripcion ILIKE $1 OR cuenta_contable ILIKE $2';
-            params.push(`%${filtro}%`, `%${filtro}%`);
+        let idx = 1;
+
+        const filtros = typeof filtroOrObj === 'string' ? { busqueda: filtroOrObj } : filtroOrObj;
+
+        if (filtros.busqueda) {
+            conditions.push(`(descripcion ILIKE $${idx} OR cuenta_contable ILIKE $${idx + 1})`);
+            params.push(`%${filtros.busqueda}%`, `%${filtros.busqueda}%`);
+            idx += 2;
+        }
+        if (filtros.estado) {
+            conditions.push(`estado = $${idx}`);
+            params.push(filtros.estado);
+            idx++;
+        }
+
+        if (conditions.length > 0) {
+            sql += ' WHERE ' + conditions.join(' AND ');
         }
         sql += ' ORDER BY id DESC';
         return ejecutarConsulta(sql, params);

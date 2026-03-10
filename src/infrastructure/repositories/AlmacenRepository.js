@@ -4,12 +4,27 @@ const { ejecutarConsulta } = require('../config/database');
  * Repositorio para la entidad Almacén (PostgreSQL).
  */
 class AlmacenRepository {
-    async listar(filtro = '') {
+    async listar(filtroOrObj = '') {
         let sql = 'SELECT * FROM almacenes';
+        const conditions = [];
         const params = [];
-        if (filtro) {
-            sql += ' WHERE descripcion ILIKE $1';
-            params.push(`%${filtro}%`);
+        let idx = 1;
+
+        const filtros = typeof filtroOrObj === 'string' ? { busqueda: filtroOrObj } : filtroOrObj;
+
+        if (filtros.busqueda) {
+            conditions.push(`descripcion ILIKE $${idx}`);
+            params.push(`%${filtros.busqueda}%`);
+            idx++;
+        }
+        if (filtros.estado) {
+            conditions.push(`estado = $${idx}`);
+            params.push(filtros.estado);
+            idx++;
+        }
+
+        if (conditions.length > 0) {
+            sql += ' WHERE ' + conditions.join(' AND ');
         }
         sql += ' ORDER BY id DESC';
         return ejecutarConsulta(sql, params);

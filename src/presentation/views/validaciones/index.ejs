@@ -1,0 +1,42 @@
+<%- include('../layout', { body: `
+    <div class="page-header">
+        <h2>✅ Validaciones de Datos</h2>
+    </div>
+
+    <p style="color: var(--color-texto-claro); margin-bottom: 1.5rem;">
+        Análisis de integridad de todos los registros del sistema. Se validan campos obligatorios, formatos y referencias.
+    </p>
+
+    <div class="validaciones-grid">
+        ${resultados.map(r => '<div class="validacion-card">' +
+            '<div class="validacion-header">' +
+                '<span class="validacion-icon">' + r.icono + '</span>' +
+                '<h3>' + r.modulo + '</h3>' +
+            '</div>' +
+            '<div class="validacion-stats">' +
+                '<div class="stat">' +
+                    '<span class="stat-num">' + r.total + '</span>' +
+                    '<span class="stat-label">Total</span>' +
+                '</div>' +
+                '<div class="stat stat-ok">' +
+                    '<span class="stat-num">' + r.validos + '</span>' +
+                    '<span class="stat-label">Válidos</span>' +
+                '</div>' +
+                '<div class="stat stat-err">' +
+                    '<span class="stat-num">' + r.invalidos + '</span>' +
+                    '<span class="stat-label">Con errores</span>' +
+                '</div>' +
+            '</div>' +
+            '<div class="validacion-campos">' +
+                '<span class="campos-label">Campos validados:</span>' +
+                r.campos.map(c => '<span class="campo-tag">' + c + '</span>').join('') +
+            '</div>' +
+            (r.invalidos > 0 ? '<div class="validacion-errores">' +
+                '<details>' +
+                    '<summary>Ver ' + r.invalidos + ' error(es)</summary>' +
+                    '<ul>' + r.errores.map(e => '<li><strong>ID ' + e.id + '</strong> (' + e.descripcion + '): ' + e.errores.join(', ') + '</li>').join('') + '</ul>' +
+                '</details>' +
+            '</div>' : '<div class="validacion-ok">🎉 Todos los registros son válidos</div>') +
+        '</div>').join('')}
+    </div>
+` }) %>

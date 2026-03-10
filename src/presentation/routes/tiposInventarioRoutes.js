@@ -5,13 +5,16 @@ const tiposInventarioCasos = require('../../application/use-cases/tiposInventari
 // Listar tipos de inventario
 router.get('/', async (req, res, next) => {
     try {
-        const filtro = req.query.busqueda || '';
-        const tipos = await tiposInventarioCasos.listar(filtro);
+        const filtros = {
+            busqueda: req.query.busqueda || '',
+            estado: req.query.estado || ''
+        };
+        const tipos = await tiposInventarioCasos.listar(filtros);
         res.render('tipos-inventario/listar', {
             titulo: 'Tipos de Inventario',
             paginaActual: 'tipos-inventario',
             tipos,
-            filtro,
+            filtros,
             mensaje: req.query.mensaje || null,
             error: req.query.error || null
         });

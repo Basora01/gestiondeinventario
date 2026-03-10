@@ -4,14 +4,35 @@ const { ejecutarConsulta } = require('../config/database');
  * Repositorio para la entidad Artículo (PostgreSQL).
  */
 class ArticuloRepository {
-    async listar(filtro = '') {
+    async listar(filtroOrObj = '') {
         let sql = `SELECT a.*, ti.descripcion AS tipo_inventario_descripcion
                FROM articulos a
                LEFT JOIN tipos_inventario ti ON a.tipo_inventario_id = ti.id`;
+        const conditions = [];
         const params = [];
-        if (filtro) {
-            sql += ' WHERE a.descripcion ILIKE $1';
-            params.push(`%${filtro}%`);
+        let idx = 1;
+
+        // Support both old string format and new object format
+        const filtros = typeof filtroOrObj === 'string' ? { busqueda: filtroOrObj } : filtroOrObj;
+
+        if (filtros.busqueda) {
+            conditions.push(`a.descripcion ILIKE $${idx}`);
+            params.push(`%${filtros.busqueda}%`);
+            idx++;
+        }
+        if (filtros.estado) {
+            conditions.push(`a.estado = $${idx}`);
+            params.push(filtros.estado);
+            idx++;
+        }
+        if (filtros.tipo_inventario_id) {
+            conditions.push(`a.tipo_inventario_id = $${idx}`);
+            params.push(filtros.tipo_inventario_id);
+            idx++;
+        }
+
+        if (conditions.length > 0) {
+            sql += ' WHERE ' + conditions.join(' AND ');
         }
         sql += ' ORDER BY a.id DESC';
         return ejecutarConsulta(sql, params);

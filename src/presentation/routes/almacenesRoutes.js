@@ -5,13 +5,16 @@ const almacenesCasos = require('../../application/use-cases/almacenesCasos');
 // Listar almacenes
 router.get('/', async (req, res, next) => {
     try {
-        const filtro = req.query.busqueda || '';
-        const almacenes = await almacenesCasos.listar(filtro);
+        const filtros = {
+            busqueda: req.query.busqueda || '',
+            estado: req.query.estado || ''
+        };
+        const almacenes = await almacenesCasos.listar(filtros);
         res.render('almacenes/listar', {
             titulo: 'Almacenes',
             paginaActual: 'almacenes',
             almacenes,
-            filtro,
+            filtros,
             mensaje: req.query.mensaje || null,
             error: req.query.error || null
         });
