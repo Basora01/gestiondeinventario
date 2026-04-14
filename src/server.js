@@ -4,6 +4,7 @@ const session = require('express-session');
 const path = require('path');
 
 const authMiddleware = require('./presentation/middleware/authMiddleware');
+const auditMiddleware = require('./presentation/middleware/auditMiddleware');
 const errorHandler = require('./presentation/middleware/errorHandler');
 
 // Importar rutas
@@ -14,6 +15,7 @@ const almacenesRoutes = require('./presentation/routes/almacenesRoutes');
 const existenciasRoutes = require('./presentation/routes/existenciasRoutes');
 const transaccionesRoutes = require('./presentation/routes/transaccionesRoutes');
 const validacionesRoutes = require('./presentation/routes/validacionesRoutes');
+const reportesRoutes = require('./presentation/routes/reportesRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -43,6 +45,9 @@ app.use(authRoutes);
 // Middleware de autenticación (protege todas las rutas siguientes)
 app.use(authMiddleware);
 
+// Middleware de auditoría (registra acciones de usuario)
+app.use(auditMiddleware);
+
 // ---- Rutas ----
 // Dashboard / Inicio
 app.get('/', (req, res) => {
@@ -59,6 +64,7 @@ app.use('/almacenes', almacenesRoutes);
 app.use('/existencias', existenciasRoutes);
 app.use('/transacciones', transaccionesRoutes);
 app.use('/validaciones', validacionesRoutes);
+app.use('/reportes', reportesRoutes);
 
 // ---- Manejo de errores ----
 // 404

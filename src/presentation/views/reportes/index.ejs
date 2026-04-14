@@ -1,0 +1,62 @@
+<%- include('../layout', { body: `
+    <div class="page-header">
+        <h2>📊 Procesos y Reportes</h2>
+    </div>
+
+    <p style="color: var(--color-texto-claro); margin-bottom: 1.5rem;">
+        Registro de todas las acciones realizadas por los usuarios en el sistema.
+    </p>
+
+    <div class="reportes-stats">
+        <div class="stat-card">
+            <span class="stat-card-icon">📝</span>
+            <div class="stat-card-num">${stats.total}</div>
+            <div class="stat-card-label">Total acciones</div>
+        </div>
+        <div class="stat-card">
+            <span class="stat-card-icon">👁️</span>
+            <div class="stat-card-num">${stats.porMetodo.GET || 0}</div>
+            <div class="stat-card-label">Consultas (GET)</div>
+        </div>
+        <div class="stat-card">
+            <span class="stat-card-icon">✏️</span>
+            <div class="stat-card-num">${stats.porMetodo.POST || 0}</div>
+            <div class="stat-card-label">Acciones (POST)</div>
+        </div>
+        <div class="stat-card">
+            <span class="stat-card-icon">👥</span>
+            <div class="stat-card-num">${Object.keys(stats.porUsuario).length}</div>
+            <div class="stat-card-label">Usuarios activos</div>
+        </div>
+    </div>
+
+    <div class="filtros-panel"><form method="GET" action="/reportes" class="filtros-grid">
+        <div class="filtro-grupo"><label>👤 Usuario</label><input type="text" name="usuario" class="form-control" placeholder="Filtrar por usuario..." value="${filtros.usuario}"></div>
+        <div class="filtro-grupo"><label>🔍 Acción</label><input type="text" name="accion" class="form-control" placeholder="Buscar acción..." value="${filtros.accion}"></div>
+        <div class="filtro-grupo"><label>⚡ Método</label><select name="metodo" class="form-control"><option value="">Todos</option><option value="GET" ${filtros.metodo === 'GET' ? 'selected' : ''}>GET (Consultas)</option><option value="POST" ${filtros.metodo === 'POST' ? 'selected' : ''}>POST (Acciones)</option></select></div>
+        <div class="filtro-acciones"><button type="submit" class="btn btn-primario">🔍 Filtrar</button><a href="/reportes" class="btn btn-secundario">🔄 Limpiar</a></div>
+    </form></div>
+
+    ${stats.porAccion.length > 0 ? '<div class="card" style="margin-bottom: 1.5rem;"><div class="card-body"><h3 style="margin-bottom: 0.8rem; font-size: 0.9rem; color: var(--color-texto-claro);">🏆 Top 10 acciones más frecuentes</h3><div class="top-acciones">' + stats.porAccion.map(function(item) { var pct = Math.round((item[1] / stats.total) * 100); return '<div class="top-accion-item"><div class="top-accion-info"><span class="top-accion-name">' + item[0] + '</span><span class="top-accion-count">' + item[1] + ' veces</span></div><div class="top-accion-bar"><div class="top-accion-fill" style="width: ' + pct + '%"></div></div></div>'; }).join('') + '</div></div></div>' : ''}
+
+    <div class="card"><div class="card-body">
+        <table class="tabla"><thead><tr>
+            <th>#</th><th>Fecha y hora</th><th>Usuario</th><th>Rol</th><th>Acción</th><th>Método</th><th>Ruta</th>
+        </tr></thead><tbody>
+        ${registros.length === 0 ? '<tr><td colspan="7"><div class="vacio"><span class="vacio-icon">📭</span><p>No hay registros de acciones aún.</p></div></td></tr>' : ''}
+        ${registros.slice(0, 100).map(function(r) {
+            var fechaStr = r.fecha instanceof Date ? r.fecha.toLocaleString('es-DO', { dateStyle: 'short', timeStyle: 'medium' }) : String(r.fecha);
+            return '<tr>' +
+                '<td>' + r.id + '</td>' +
+                '<td><span class="fecha-badge">' + fechaStr + '</span></td>' +
+                '<td><strong>' + r.usuario + '</strong></td>' +
+                '<td><span class="badge badge-' + (r.rol === 'Administrador' ? 'activo' : 'inactivo') + '">' + r.rol + '</span></td>' +
+                '<td>' + r.accion + '</td>' +
+                '<td><span class="badge badge-' + (r.metodo === 'POST' ? 'entrada' : 'salida') + '">' + r.metodo + '</span></td>' +
+                '<td><code class="ruta-code">' + r.ruta + '</code></td>' +
+            '</tr>';
+        }).join('')}
+        </tbody></table>
+        ${registros.length > 100 ? '<p style="text-align:center; color: var(--color-texto-claro); margin-top: 1rem; font-size: 0.82rem;">Mostrando los últimos 100 de ' + registros.length + ' registros.</p>' : ''}
+    </div></div>
+` }) %>

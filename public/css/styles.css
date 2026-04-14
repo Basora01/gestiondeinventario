@@ -1280,4 +1280,131 @@ tbody tr:nth-child(10) {
   .login-card {
     padding: 1.5rem;
   }
+  .reportes-stats {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* ========================================
+   Procesos y Reportes
+   ======================================== */
+.reportes-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.stat-card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-borde);
+  border-radius: var(--radio-borde);
+  padding: 1.2rem;
+  text-align: center;
+  transition: var(--transicion);
+  animation: fadeInUp 0.4s ease-out both;
+}
+
+.stat-card:nth-child(1) { animation-delay: 0.05s; }
+.stat-card:nth-child(2) { animation-delay: 0.1s; }
+.stat-card:nth-child(3) { animation-delay: 0.15s; }
+.stat-card:nth-child(4) { animation-delay: 0.2s; }
+
+.stat-card:hover {
+  border-color: var(--color-borde-hover);
+  box-shadow: var(--sombra-glow);
+  transform: translateY(-2px);
+}
+
+.stat-card-icon {
+  font-size: 1.5rem;
+  display: block;
+  margin-bottom: 0.4rem;
+}
+
+.stat-card-num {
+  font-size: 1.8rem;
+  font-weight: 800;
+  background: var(--gradiente-primario);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.stat-card-label {
+  font-size: 0.72rem;
+  color: var(--color-texto-claro);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-top: 0.2rem;
+}
+
+/* Top acciones bar chart */
+.top-acciones {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.top-accion-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.top-accion-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.top-accion-name {
+  font-size: 0.78rem;
+  color: var(--color-texto);
+}
+
+.top-accion-count {
+  font-size: 0.72rem;
+  color: var(--color-texto-claro);
+  font-weight: 500;
+}
+
+.top-accion-bar {
+  height: 6px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.top-accion-fill {
+  height: 100%;
+  background: var(--gradiente-primario);
+  border-radius: 3px;
+  transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: barGrow 1s ease-out;
+}
+
+@keyframes barGrow {
+  from { width: 0 !important; }
+}
+
+/* Audit table extras */
+.fecha-badge {
+  font-size: 0.75rem;
+  color: var(--color-texto-claro);
+  font-family: 'Courier New', monospace;
+  white-space: nowrap;
+}
+
+.ruta-code {
+  font-size: 0.72rem;
+  padding: 0.15rem 0.4rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--color-borde);
+  border-radius: 4px;
+  font-family: 'Courier New', monospace;
+  color: var(--color-acento);
+  white-space: nowrap;
 }
