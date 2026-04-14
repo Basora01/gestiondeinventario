@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const auditLog = require('../../infrastructure/auditLog');
 
-// Página de reportes y procesos
+// Página de logs de usuario
 router.get('/', (req, res) => {
     const filtros = {
         usuario: req.query.usuario || '',
@@ -14,8 +14,8 @@ router.get('/', (req, res) => {
     const stats = auditLog.estadisticas();
 
     res.render('reportes/index', {
-        titulo: 'Procesos y Reportes',
-        paginaActual: 'reportes',
+        titulo: 'Logs de Usuario',
+        paginaActual: 'logs',
         registros,
         stats,
         filtros

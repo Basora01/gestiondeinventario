@@ -36,7 +36,8 @@ const ACCIONES = {
     'POST /transacciones/crear': 'Registró una nueva Transacción',
     'POST /transacciones/eliminar': 'Eliminó una Transacción',
     'GET /validaciones': 'Ejecutó Validaciones de Datos',
-    'GET /reportes': 'Consultó Procesos y Reportes',
+    'GET /logs': 'Consultó Logs de Usuario',
+    'GET /procesos': 'Consultó Procesos y Reportes',
     'POST /login': 'Inició sesión',
     'GET /logout': 'Cerró sesión'
 };

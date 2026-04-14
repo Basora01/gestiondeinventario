@@ -1,6 +1,6 @@
 <%- include('../layout', { body: `
     <div class="page-header">
-        <h2>📊 Procesos y Reportes</h2>
+        <h2>📝 Logs de Usuario</h2>
     </div>
 
     <p style="color: var(--color-texto-claro); margin-bottom: 1.5rem;">
@@ -30,11 +30,11 @@
         </div>
     </div>
 
-    <div class="filtros-panel"><form method="GET" action="/reportes" class="filtros-grid">
+    <div class="filtros-panel"><form method="GET" action="/logs" class="filtros-grid">
         <div class="filtro-grupo"><label>👤 Usuario</label><input type="text" name="usuario" class="form-control" placeholder="Filtrar por usuario..." value="${filtros.usuario}"></div>
         <div class="filtro-grupo"><label>🔍 Acción</label><input type="text" name="accion" class="form-control" placeholder="Buscar acción..." value="${filtros.accion}"></div>
         <div class="filtro-grupo"><label>⚡ Método</label><select name="metodo" class="form-control"><option value="">Todos</option><option value="GET" ${filtros.metodo === 'GET' ? 'selected' : ''}>GET (Consultas)</option><option value="POST" ${filtros.metodo === 'POST' ? 'selected' : ''}>POST (Acciones)</option></select></div>
-        <div class="filtro-acciones"><button type="submit" class="btn btn-primario">🔍 Filtrar</button><a href="/reportes" class="btn btn-secundario">🔄 Limpiar</a></div>
+        <div class="filtro-acciones"><button type="submit" class="btn btn-primario">🔍 Filtrar</button><a href="/logs" class="btn btn-secundario">🔄 Limpiar</a></div>
     </form></div>
 
     ${stats.porAccion.length > 0 ? '<div class="card" style="margin-bottom: 1.5rem;"><div class="card-body"><h3 style="margin-bottom: 0.8rem; font-size: 0.9rem; color: var(--color-texto-claro);">🏆 Top 10 acciones más frecuentes</h3><div class="top-acciones">' + stats.porAccion.map(function(item) { var pct = Math.round((item[1] / stats.total) * 100); return '<div class="top-accion-item"><div class="top-accion-info"><span class="top-accion-name">' + item[0] + '</span><span class="top-accion-count">' + item[1] + ' veces</span></div><div class="top-accion-bar"><div class="top-accion-fill" style="width: ' + pct + '%"></div></div></div>'; }).join('') + '</div></div></div>' : ''}

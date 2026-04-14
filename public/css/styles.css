@@ -1408,3 +1408,30 @@ tbody tr:nth-child(10) {
   color: var(--color-acento);
   white-space: nowrap;
 }
+
+/* Stat card variants for procesos */
+.stat-card-entrada {
+  border-color: rgba(52, 211, 153, 0.25);
+}
+.stat-card-entrada .stat-card-num {
+  background: linear-gradient(135deg, #34d399, #10b981);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.stat-card-entrada:hover {
+  box-shadow: 0 0 20px rgba(52, 211, 153, 0.15);
+}
+
+.stat-card-salida {
+  border-color: rgba(248, 113, 113, 0.25);
+}
+.stat-card-salida .stat-card-num {
+  background: linear-gradient(135deg, #f87171, #ef4444);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.stat-card-salida:hover {
+  box-shadow: 0 0 20px rgba(248, 113, 113, 0.15);
+}

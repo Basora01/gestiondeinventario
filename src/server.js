@@ -15,7 +15,8 @@ const almacenesRoutes = require('./presentation/routes/almacenesRoutes');
 const existenciasRoutes = require('./presentation/routes/existenciasRoutes');
 const transaccionesRoutes = require('./presentation/routes/transaccionesRoutes');
 const validacionesRoutes = require('./presentation/routes/validacionesRoutes');
-const reportesRoutes = require('./presentation/routes/reportesRoutes');
+const logsRoutes = require('./presentation/routes/reportesRoutes');
+const procesosRoutes = require('./presentation/routes/procesosRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -64,7 +65,8 @@ app.use('/almacenes', almacenesRoutes);
 app.use('/existencias', existenciasRoutes);
 app.use('/transacciones', transaccionesRoutes);
 app.use('/validaciones', validacionesRoutes);
-app.use('/reportes', reportesRoutes);
+app.use('/logs', logsRoutes);
+app.use('/procesos', procesosRoutes);
 
 // ---- Manejo de errores ----
 // 404

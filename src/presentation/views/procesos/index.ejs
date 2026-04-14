@@ -1,0 +1,88 @@
+<%- include('../layout', { body: `
+    <div class="page-header">
+        <h2>📦 Procesos y Reportes</h2>
+    </div>
+
+    <p style="color: var(--color-texto-claro); margin-bottom: 1.5rem;">
+        Control de entradas (compras) y salidas (ventas) de inventario. Resumen en tiempo real.
+    </p>
+
+    <div class="reportes-stats">
+        <div class="stat-card">
+            <span class="stat-card-icon">📋</span>
+            <div class="stat-card-num">${resumen.total_articulos}</div>
+            <div class="stat-card-label">Art\u00EDculos registrados</div>
+        </div>
+        <div class="stat-card">
+            <span class="stat-card-icon">📦</span>
+            <div class="stat-card-num">${parseFloat(resumen.existencia_total).toFixed(0)}</div>
+            <div class="stat-card-label">Unidades en inventario</div>
+        </div>
+        <div class="stat-card stat-card-entrada">
+            <span class="stat-card-icon">📥</span>
+            <div class="stat-card-num">${parseFloat(movResumen.total_entradas_cant).toFixed(0)}</div>
+            <div class="stat-card-label">Unidades compradas</div>
+        </div>
+        <div class="stat-card stat-card-salida">
+            <span class="stat-card-icon">📤</span>
+            <div class="stat-card-num">${parseFloat(movResumen.total_salidas_cant).toFixed(0)}</div>
+            <div class="stat-card-label">Unidades vendidas</div>
+        </div>
+    </div>
+
+    <div class="reportes-stats" style="margin-bottom: 1.5rem;">
+        <div class="stat-card">
+            <span class="stat-card-icon">💰</span>
+            <div class="stat-card-num">$${parseFloat(movResumen.total_compras_monto).toFixed(2)}</div>
+            <div class="stat-card-label">Total compras</div>
+        </div>
+        <div class="stat-card">
+            <span class="stat-card-icon">💸</span>
+            <div class="stat-card-num">$${parseFloat(movResumen.total_ventas_monto).toFixed(2)}</div>
+            <div class="stat-card-label">Total ventas</div>
+        </div>
+        <div class="stat-card">
+            <span class="stat-card-icon">🔄</span>
+            <div class="stat-card-num">${movResumen.total_transacciones}</div>
+            <div class="stat-card-label">Total transacciones</div>
+        </div>
+        <div class="stat-card">
+            <span class="stat-card-icon">⚖️</span>
+            <div class="stat-card-num">${movResumen.total_ajustes}</div>
+            <div class="stat-card-label">Ajustes realizados</div>
+        </div>
+    </div>
+
+    ${topArticulos.length > 0 ? '<div class="card" style="margin-bottom: 1.5rem;"><div class="card-body"><h3 style="margin-bottom: 0.8rem; font-size: 0.9rem; color: var(--color-texto-claro);">📊 Resumen por art\u00EDculo</h3><table class="tabla"><thead><tr><th>Art\u00EDculo</th><th>Existencia actual</th><th>Entradas (compras)</th><th>Salidas (ventas)</th><th>Monto total</th></tr></thead><tbody>' + topArticulos.map(function(a) { return '<tr><td><strong>' + a.descripcion + '</strong></td><td>' + parseFloat(a.existencia_total).toFixed(2) + '</td><td><span class="badge badge-entrada">+' + parseFloat(a.entradas).toFixed(0) + '</span></td><td><span class="badge badge-salida">-' + parseFloat(a.salidas).toFixed(0) + '</span></td><td>$' + parseFloat(a.monto_total).toFixed(2) + '</td></tr>'; }).join('') + '</tbody></table></div></div>' : ''}
+
+    <div class="filtros-panel"><form method="GET" action="/procesos" class="filtros-grid">
+        <div class="filtro-grupo"><label>🔄 Tipo</label><select name="tipo" class="form-control"><option value="">Todos</option><option value="Entrada" ${filtros.tipo === 'Entrada' ? 'selected' : ''}>📥 Entrada (Compra)</option><option value="Salida" ${filtros.tipo === 'Salida' ? 'selected' : ''}>📤 Salida (Venta)</option><option value="Ajuste" ${filtros.tipo === 'Ajuste' ? 'selected' : ''}>⚖️ Ajuste</option></select></div>
+        <div class="filtro-grupo"><label>📋 Art\u00EDculo</label><select name="articulo_id" class="form-control"><option value="">Todos</option>${articulos.map(a => '<option value="' + a.id + '" ' + (String(filtros.articulo_id) === String(a.id) ? 'selected' : '') + '>' + a.descripcion + '</option>').join('')}</select></div>
+        <div class="filtro-grupo"><label>📅 Desde</label><input type="date" name="fecha_desde" class="form-control" value="${filtros.fecha_desde}"></div>
+        <div class="filtro-grupo"><label>📅 Hasta</label><input type="date" name="fecha_hasta" class="form-control" value="${filtros.fecha_hasta}"></div>
+        <div class="filtro-acciones"><button type="submit" class="btn btn-primario">🔍 Filtrar</button><a href="/procesos" class="btn btn-secundario">🔄 Limpiar</a></div>
+    </form></div>
+
+    <div class="card"><div class="card-body">
+        <h3 style="margin-bottom: 0.8rem; font-size: 0.9rem; color: var(--color-texto-claro);">📜 Registro de movimientos</h3>
+        <table class="tabla"><thead><tr>
+            <th>ID</th><th>Tipo</th><th>Art\u00EDculo</th><th>Almac\u00E9n</th><th>Fecha</th><th>Cantidad</th><th>Monto</th>
+        </tr></thead><tbody>
+        ${movimientos.length === 0 ? '<tr><td colspan="7"><div class="vacio"><span class="vacio-icon">📭</span><p>No se encontraron movimientos.</p></div></td></tr>' : ''}
+        ${movimientos.map(function(m) {
+            var tipoLabel = m.tipo === 'Entrada' ? '📥 Compra' : m.tipo === 'Salida' ? '📤 Venta' : '⚖️ Ajuste';
+            var tipoBadge = m.tipo.toLowerCase();
+            var fechaStr = m.fecha instanceof Date ? m.fecha.toISOString().split('T')[0] : String(m.fecha).split('T')[0];
+            return '<tr>' +
+                '<td>' + m.id + '</td>' +
+                '<td><span class="badge badge-' + tipoBadge + '">' + tipoLabel + '</span></td>' +
+                '<td>' + m.articulo + '</td>' +
+                '<td>' + m.almacen + '</td>' +
+                '<td>' + fechaStr + '</td>' +
+                '<td>' + parseFloat(m.cantidad).toFixed(2) + '</td>' +
+                '<td>$' + parseFloat(m.monto).toFixed(2) + '</td>' +
+            '</tr>';
+        }).join('')}
+        </tbody></table>
+    </div></div>
+` }) %>
